@@ -1,4 +1,5 @@
 "use client";
+"use client";
 import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import {
@@ -50,7 +51,6 @@ export default function Home() {
   const [level, setLevel] = useState(1);
   const [successfulTries, setSuccessfulTries] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
   const [showScoreboard, setShowScoreboard] = useState(false); // State to control the scoreboard modal
   const [scores, setScores] = useState(initialScores); // State to store the high scores
 
@@ -67,13 +67,6 @@ export default function Home() {
             return 0;
           }
           return newLevel;
-        });
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 0) {
-            setGameOver(true);
-            return 0;
-          }
-          return prevTime - 0.1;
         });
       }, 100);
       return () => clearInterval(interval);
@@ -122,7 +115,6 @@ export default function Home() {
         const newTries = prev + 1;
         if (newTries >= getTriesForNextLevel(level)) {
           setLevel((prevLevel) => prevLevel + 1);
-          setTimeLeft((prevTime) => prevTime + 10);
           return 0;
         }
         return newTries;
@@ -140,7 +132,6 @@ export default function Home() {
     setLevel(1);
     setSuccessfulTries(0);
     setIsPaused(false);
-    setTimeLeft(30);
   };
 
   const togglePause = () => {
@@ -277,13 +268,6 @@ export default function Home() {
             percent={Math.round(
               (successfulTries / getTriesForNextLevel(level)) * 100
             )}
-            className={styles.progress}
-          />
-        </div>
-        <div className={styles.progressContainer}>
-          <p className={styles.progressLabel}>Time left:</p>
-          <AntProgress
-            percent={Math.round((timeLeft / 30) * 100)}
             className={styles.progress}
           />
         </div>
