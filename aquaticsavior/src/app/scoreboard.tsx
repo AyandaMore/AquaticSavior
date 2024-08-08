@@ -32,17 +32,23 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
         variants={variants}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <List
-          dataSource={scores}
-          renderItem={(item, index) => (
-            <List.Item>
-              <List.Item.Meta
-                title={`#${index + 1} ${item.name}`}
-                description={`Score: ${item.score}`}
-              />
-            </List.Item>
-          )}
-        />
+        {scores.length === 0 ? (
+          <p style={{ padding: '16px', textAlign: 'center' }}>
+            Play first to see the list of scores
+          </p>
+        ) : (
+          <List
+            dataSource={scores}
+            renderItem={(item, index) => (
+              <List.Item>
+                <List.Item.Meta
+                  title={`${index + 1}. ${item.name}`}
+                  description={`Score: ${item.score}`}
+                />
+              </List.Item>
+            )}
+          />
+        )}
       </motion.div>
     </Modal>
   );

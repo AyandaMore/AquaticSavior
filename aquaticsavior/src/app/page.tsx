@@ -6,24 +6,25 @@ import {
   Button as AntButton,
   Progress as AntProgress,
   Switch,
+  Modal,
+  Input,
 } from "antd";
 import { AlertCircle, Pause, Play, RefreshCw } from "lucide-react";
 import { Button } from "./button";
 import { Scoreboard } from "./scoreboard";
 
-import { Howl } from 'howler';
+import { Howl } from "howler";
 
 // Sound instances
 const startSound = new Howl({
-  src: ['/sounds/start.wav'],
+  src: ["/sounds/start.wav"],
   volume: 1.0,
 });
 
 const gameOverSound = new Howl({
-  src: ['/sounds/fail.wav'],
+  src: ["/sounds/fail.wav"],
   volume: 1.0,
 });
-
 
 interface ShortcutItem {
   key: string;
@@ -42,13 +43,7 @@ const shortcuts: ShortcutItem[] = [
   { key: "L+Z", description: "List Zoom" },
 ];
 
-const initialScores = [
-  { name: "Alice", score: 500 },
-  { name: "Bob", score: 450 },
-  { name: "Charlie", score: 400 },
-  { name: "Dave", score: 350 },
-  { name: "Eve", score: 300 },
-];
+const initialScores = [{ name: "Alice", score: 500 }];
 
 export default function Home() {
   const [waterLevel, setWaterLevel] = useState(90);
@@ -64,9 +59,10 @@ export default function Home() {
   const [successfulTries, setSuccessfulTries] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showScoreboard, setShowScoreboard] = useState(false);
-  const [scores, setScores] = useState(initialScores);
+  const [scores, setScores] = useState<{ name: string; score: number }[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
+  const [isNameModalVisible, setIsNameModalVisible] = useState(false);
+  const [playerName, setPlayerName] = useState("");
   const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
 
@@ -143,10 +139,48 @@ export default function Home() {
   useEffect(() => {
     if (gameOver) {
       gameOverSound.play(); // Play game over sound
+      setIsNameModalVisible(true); // Show name entry modal
     }
   }, [gameOver]);
 
+  const handleNameSubmit = () => {
+    if (!playerName.trim()) {
+      return; // Optionally, you can show an error if the name is empty
+    }
+
+    const newScore = { name: playerName, score: score };
+    const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+    storedScores.push(newScore);
+    storedScores.sort((a: any, b: any) => b.score - a.score); // Sort scores in descending order
+    storedScores.splice(5); // Keep only top 10 scores
+    localStorage.setItem("scores", JSON.stringify(storedScores));
+
+    // Update the state and close the modal
+    setScores(storedScores);
+    setIsNameModalVisible(false);
+    setPlayerName("");
+    setGameOver(true); // Reset game over state if needed
+  };
+
   const resetGame = () => {
+    if (gameOver) {
+      setIsNameModalVisible(false); // Hide the name entry modal
+      setWaterLevel(100);
+      setScore(0);
+      setGameOver(false);
+      setGameStarted(false);
+      setPressedKeys(new Set());
+      setCurrentShortcut(
+        shortcuts[Math.floor(Math.random() * shortcuts.length)]
+      );
+      setLevel(1);
+      setSuccessfulTries(0);
+      setIsPaused(false);
+      setFishPosition(60); // Reset fish position
+      return;
+    }
+
+    // Handle the case when game is not over
     setWaterLevel(100);
     setScore(0);
     setGameOver(false);
@@ -358,6 +392,21 @@ export default function Home() {
           scores={scores}
         />
       </div>
+
+      <Modal
+        title="Enter Your Name"
+        visible={isNameModalVisible}
+        onOk={handleNameSubmit}
+        onCancel={() => setIsNameModalVisible(false)}
+        okText="Save"
+        cancelText="Cancel"
+      >
+        <Input
+          placeholder="Enter your name"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+        />
+      </Modal>
     </main>
   );
 }
