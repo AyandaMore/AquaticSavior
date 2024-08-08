@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import {
@@ -38,7 +37,8 @@ const initialScores = [
 ];
 
 export default function Home() {
-  const [waterLevel, setWaterLevel] = useState(100);
+  const [waterLevel, setWaterLevel] = useState(90);
+  const [fishPosition, setFishPosition] = useState(60); // Fish position state
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [currentShortcut, setCurrentShortcut] = useState<ShortcutItem>(
@@ -50,7 +50,7 @@ export default function Home() {
   const [successfulTries, setSuccessfulTries] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showScoreboard, setShowScoreboard] = useState(false);
-  const [scores, setScores] = useState(initialScores); // State to store the high scores
+  const [scores, setScores] = useState(initialScores);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
@@ -65,12 +65,15 @@ export default function Home() {
             setGameOver(true);
             return 0;
           }
+          if (newLevel <= fishPosition) {
+            setFishPosition((prev) => prev + 0.3); // Move fish down if water level is below fish
+          }
           return newLevel;
         });
       }, 100);
       return () => clearInterval(interval);
     }
-  }, [gameStarted, gameOver, level, isPaused]);
+  }, [gameStarted, gameOver, level, isPaused, fishPosition]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -118,6 +121,7 @@ export default function Home() {
         }
         return newTries;
       });
+      setFishPosition(60); // Reset fish position when successful
     }
   }, [pressedKeys, currentShortcut, level]);
 
@@ -131,6 +135,7 @@ export default function Home() {
     setLevel(1);
     setSuccessfulTries(0);
     setIsPaused(false);
+    setFishPosition(60); // Reset fish position
   };
 
   const togglePause = () => {
@@ -217,10 +222,18 @@ export default function Home() {
           <div className={styles.plant2} />
           <div
             className={styles.fishContainer}
-            style={{ animationPlayState: isPaused ? "paused" : "running" }}
+            style={{
+              animationPlayState: isPaused ? "paused" : "running",
+              top: `${fishPosition}%`, // Adjust fish position dynamically
+            }}
           >
-            <div className={styles.fish}>🐠</div>
+            <div
+              className={`${styles.fish} ${gameOver ? styles.deadFish : ""}`}
+            >
+              {gameOver ? "☣︎" : "🐠"}
+            </div>
           </div>
+
           <div
             className={styles.bubble}
             style={{
@@ -279,7 +292,7 @@ export default function Home() {
               (successfulTries / getTriesForNextLevel(level)) * 100
             )}
             className={styles.progress}
-            trailColor="#c2c2c242" 
+            trailColor="#c2c2c242"
             format={(percent) => (
               <span style={{ color: "#004d99" }}>{percent}%</span>
             )}

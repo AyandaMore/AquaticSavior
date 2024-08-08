@@ -1,16 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@400;700&family=Roboto:wght@400;700&display=swap");
 
-/* .main {
-  font-family: "Roboto", sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
-  transition: background-color 0.3s, color 0.3s;
-} */
-
 .description {
   display: inherit;
   justify-content: inherit;
@@ -315,6 +304,17 @@
   background-color: #007f00ba;
 }
 
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
 @keyframes swim {
   0%,
   100% {
@@ -331,15 +331,6 @@
   }
 }
 
-@keyframes sway {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(5deg);
-  }
-}
 
 .fishContainer {
   width: 100px;
@@ -347,7 +338,7 @@
   position: absolute;
   bottom: 20%;
   left: 40%;
-  animation: swim 20s ease-in-out infinite;
+  animation: swim 20s ease-in-out infinite, swimDown 5s ease forwards;
 }
 
 .fish {
@@ -355,6 +346,7 @@
   transform-origin: center;
   animation: sway 2s ease-in-out infinite;
 }
+
 
 @keyframes bubble {
   0% {
@@ -508,3 +500,19 @@
 .lightMode .outlineButton:disabled {
   color: #423f3f; 
 }
+.deadFish {
+  animation: deadFishAnimation 1s ease-in-out forwards;
+}
+
+@keyframes deadFishAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
