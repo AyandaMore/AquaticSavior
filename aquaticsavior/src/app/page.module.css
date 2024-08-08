@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@400;700&family=Roboto:wght@400;700&display=swap");
 
-.main {
+/* .main {
   font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,8 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
-}
+  transition: background-color 0.3s, color 0.3s;
+} */
 
 .description {
   display: inherit;
@@ -232,7 +233,7 @@
   }
 }
 
-/* =================================== */
+/* ================game================== */
 .container {
   display: flex;
   flex-direction: column;
@@ -275,7 +276,7 @@
 .bowl {
   width: 300px;
   height: 230px;
-  background-color: #4a90e2;
+  background-color: #81bcff;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
@@ -400,6 +401,12 @@
   font-weight: 600;
 }
 
+.alert {
+  font-size: 1.125rem;
+  color: #ff0000;
+  margin-top: 1rem;
+}
+
 .statsValue {
   font-size: 2rem;
   font-weight: bold;
@@ -445,4 +452,59 @@
   opacity: 0.5;
   cursor: not-allowed;
   color: white;
+}
+/* theme  */
+
+.darkMode {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #fff;
+}
+
+.lightMode {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+  background-color: #fff;
+  color: #000;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.themeSwitch {
+  margin-left: auto;
+}
+
+/* Additional styles for dark mode */
+.lightMode .bubble {
+  background-color: #4444442f;
+}
+
+/* .darkMode .wave path {
+  fill: url(#gradDark);
+} */
+
+/* Define dark gradient */
+@keyframes waveDark {
+  0% { stop-color: #0066cc; }
+  100% { stop-color: #004d99; }
+}
+
+.lightMode .solidButton:disabled,
+.lightMode .outlineButton:disabled {
+  color: #423f3f; 
 }

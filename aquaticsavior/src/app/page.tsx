@@ -6,13 +6,11 @@ import {
   Alert as AntAlert,
   Button as AntButton,
   Progress as AntProgress,
-  Typography,
+  Switch,
 } from "antd";
 import { AlertCircle, Pause, Play, RefreshCw } from "lucide-react";
 import { Button } from "./button";
-import { Scoreboard } from "./scoreboard"; // Import the Scoreboard component
-
-const { Title, Paragraph } = Typography;
+import { Scoreboard } from "./scoreboard";
 
 interface ShortcutItem {
   key: string;
@@ -51,8 +49,9 @@ export default function Home() {
   const [level, setLevel] = useState(1);
   const [successfulTries, setSuccessfulTries] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [showScoreboard, setShowScoreboard] = useState(false); // State to control the scoreboard modal
+  const [showScoreboard, setShowScoreboard] = useState(false);
   const [scores, setScores] = useState(initialScores); // State to store the high scores
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
@@ -138,8 +137,12 @@ export default function Home() {
     setIsPaused((prev) => !prev);
   };
 
+  const toggleDarkMode = (checked: boolean) => {
+    setIsDarkMode(checked);
+  };
+
   return (
-    <main className={styles.main}>
+    <main className={isDarkMode ? styles.darkMode : styles.lightMode}>
       <div
         className={styles.bubble}
         style={{
@@ -167,8 +170,15 @@ export default function Home() {
           animationDelay: "4s",
         }}
       />
+      <Switch
+        checked={isDarkMode}
+        onChange={toggleDarkMode}
+        className={styles.themeSwitch}
+      />
       <div className={styles.container}>
-        <h1 className={styles.title}>Fish Bowl Challenge</h1>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Aquatic Savior</h1>
+        </div>
         <div className={styles.bowl}>
           <svg
             className={styles.wave}
@@ -269,6 +279,10 @@ export default function Home() {
               (successfulTries / getTriesForNextLevel(level)) * 100
             )}
             className={styles.progress}
+            trailColor="#c2c2c242" 
+            format={(percent) => (
+              <span style={{ color: "#004d99" }}>{percent}%</span>
+            )}
           />
         </div>
         {gameOver && (
