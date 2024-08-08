@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import {
@@ -10,6 +9,7 @@ import {
 } from "antd";
 import { AlertCircle, Pause, Play, RefreshCw } from "lucide-react";
 import { Button } from "./button";
+import { Scoreboard } from "./scoreboard"; // Import the Scoreboard component
 
 const { Title, Paragraph } = Typography;
 
@@ -30,6 +30,14 @@ const shortcuts: ShortcutItem[] = [
   { key: "L+Z", description: "List Zoom" },
 ];
 
+const initialScores = [
+  { name: "Alice", score: 500 },
+  { name: "Bob", score: 450 },
+  { name: "Charlie", score: 400 },
+  { name: "Dave", score: 350 },
+  { name: "Eve", score: 300 },
+];
+
 export default function Home() {
   const [waterLevel, setWaterLevel] = useState(100);
   const [score, setScore] = useState(0);
@@ -43,6 +51,8 @@ export default function Home() {
   const [successfulTries, setSuccessfulTries] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30);
+  const [showScoreboard, setShowScoreboard] = useState(false); // State to control the scoreboard modal
+  const [scores, setScores] = useState(initialScores); // State to store the high scores
 
   const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
@@ -139,33 +149,33 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-           <div
-            className={styles.bubble}
-            style={{
-              width: "10px",
-              height: "10px",
-              left: "30%",
-              animationDelay: "0s",
-            }}
-          />
-          <div
-            className={styles.bubble}
-            style={{
-              width: "15px",
-              height: "15px",
-              left: "50%",
-              animationDelay: "2s",
-            }}
-          />
-          <div
-            className={styles.bubble}
-            style={{
-              width: "8px",
-              height: "8px",
-              left: "70%",
-              animationDelay: "4s",
-            }}
-          />
+      <div
+        className={styles.bubble}
+        style={{
+          width: "10px",
+          height: "10px",
+          left: "30%",
+          animationDelay: "0s",
+        }}
+      />
+      <div
+        className={styles.bubble}
+        style={{
+          width: "15px",
+          height: "15px",
+          left: "50%",
+          animationDelay: "2s",
+        }}
+      />
+      <div
+        className={styles.bubble}
+        style={{
+          width: "8px",
+          height: "8px",
+          left: "70%",
+          animationDelay: "4s",
+        }}
+      />
       <div className={styles.container}>
         <h1 className={styles.title}>Fish Bowl Challenge</h1>
         <div className={styles.bowl}>
@@ -302,7 +312,18 @@ export default function Home() {
             )}
             {isPaused ? "Resume" : "Pause"}
           </Button>
+          <Button
+            onClick={() => setShowScoreboard(true)}
+            variant="outline"
+          >
+            Scoreboard
+          </Button>
         </div>
+        <Scoreboard
+          visible={showScoreboard}
+          onClose={() => setShowScoreboard(false)}
+          scores={scores}
+        />
       </div>
     </main>
   );
