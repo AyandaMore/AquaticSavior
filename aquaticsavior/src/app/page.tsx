@@ -139,7 +139,33 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
- 
+           <div
+            className={styles.bubble}
+            style={{
+              width: "10px",
+              height: "10px",
+              left: "30%",
+              animationDelay: "0s",
+            }}
+          />
+          <div
+            className={styles.bubble}
+            style={{
+              width: "15px",
+              height: "15px",
+              left: "50%",
+              animationDelay: "2s",
+            }}
+          />
+          <div
+            className={styles.bubble}
+            style={{
+              width: "8px",
+              height: "8px",
+              left: "70%",
+              animationDelay: "4s",
+            }}
+          />
       <div className={styles.container}>
         <h1 className={styles.title}>Fish Bowl Challenge</h1>
         <div className={styles.bowl}>
