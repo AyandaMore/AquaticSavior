@@ -137,11 +137,25 @@ export default function Home() {
   }, [pressedKeys, currentShortcut, level]);
 
   useEffect(() => {
+    const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+    setScores(storedScores);
+  }, []);
+  
+
+  useEffect(() => {
     if (gameOver) {
       gameOverSound.play(); // Play game over sound
-      setIsNameModalVisible(true); // Show name entry modal
+  
+      // Check if the score is higher than any existing scores
+      const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+      const isHighScore = storedScores.some((scoreEntry: { score: number }) => score > scoreEntry.score);
+  
+      if (isHighScore) {
+        setIsNameModalVisible(true); // Show name entry modal only if it's a high score
+      }
     }
-  }, [gameOver]);
+  }, [gameOver, score]);
+  
 
   const handleNameSubmit = () => {
     if (!playerName.trim()) {
@@ -383,7 +397,7 @@ export default function Home() {
             variant="outline"
             disabled={gameStarted && !gameOver} // Disable the button during gameplay
           >
-            Scoreboard
+            Leaderboard
           </Button>
         </div>
         <Scoreboard
@@ -394,19 +408,34 @@ export default function Home() {
       </div>
 
       <Modal
-        title="Enter Your Name"
-        visible={isNameModalVisible}
-        onOk={handleNameSubmit}
-        onCancel={() => setIsNameModalVisible(false)}
-        okText="Save"
-        cancelText="Cancel"
-      >
-        <Input
-          placeholder="Enter your name"
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-        />
-      </Modal>
+  title="Enter Your Name"
+  visible={isNameModalVisible}
+  onOk={handleNameSubmit}
+  onCancel={() => setIsNameModalVisible(false)}
+  okText="Save"
+  cancelText="Cancel"
+  okButtonProps={{
+    style: {
+      backgroundColor: 'transparent',
+      border: '1px solid #1890ff',
+      color: '#1890ff', // Set the text color
+    },
+  }}
+  cancelButtonProps={{
+    style: {
+      backgroundColor: 'transparent',
+     
+      color: '#1890ff', // Set the text color
+    },
+  }}
+>
+  <Input
+    // placeholder="Enter your name"
+    value={playerName}
+    onChange={(e) => setPlayerName(e.target.value)}
+  />
+</Modal>
+
     </main>
   );
 }

@@ -496,6 +496,25 @@
   100% { stop-color: #004d99; }
 }
 
+.darkMode .alert {
+  font-size: 1.125rem;
+  color: #ff0000;
+  margin-top: 1rem;
+  background-color: #ffffff5e; 
+  border-color: #ff000060; 
+
+}
+
+.ant-modal .ant-modal-content {
+  background-color: #000000; 
+  border-color: #ff000060; 
+}
+
+.modal{
+  background-color: #000000; 
+  border-color: #ff000060; 
+}
+
 .lightMode .solidButton:disabled,
 .lightMode .outlineButton:disabled {
   color: #423f3f; 
@@ -515,4 +534,6 @@
     transform: rotate(0deg);
   }
 }
+
+
 

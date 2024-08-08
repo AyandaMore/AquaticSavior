@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, List } from "antd";
 import { motion } from "framer-motion";
+import { TrophyOutlined } from "@ant-design/icons";
 
 interface ScoreboardProps {
   visible: boolean;
@@ -20,7 +21,12 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
 
   return (
     <Modal
-      title="Scoreboard"
+      title={
+        <span>
+          <TrophyOutlined style={{ marginRight: 8 }} />
+          Leaderboard
+        </span>
+      }
       visible={visible}
       onCancel={onClose}
       footer={null}
@@ -34,7 +40,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
       >
         {scores.length === 0 ? (
           <p style={{ padding: '16px', textAlign: 'center' }}>
-            Play first to see the list of scores
+            No scores available. Play the game to add scores to the leaderboard.
           </p>
         ) : (
           <List
