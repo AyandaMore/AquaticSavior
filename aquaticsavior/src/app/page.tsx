@@ -315,6 +315,7 @@ export default function Home() {
           <Button
             onClick={() => setShowScoreboard(true)}
             variant="outline"
+            disabled={gameStarted && !gameOver} // Disable the button during gameplay
           >
             Scoreboard
           </Button>
