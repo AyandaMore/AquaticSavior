@@ -137,8 +137,10 @@ export default function Home() {
   }, [pressedKeys, currentShortcut, level]);
 
   useEffect(() => {
-    const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-    setScores(storedScores);
+    if (global?.window !== undefined) {
+      const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+      setScores(storedScores);
+    }
   }, []);
 
   useEffect(() => {
@@ -146,13 +148,16 @@ export default function Home() {
       gameOverSound.play(); // Play game over sound
 
       // Check if the score is higher than any existing scores
-      const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-      const isHighScore = storedScores.some(
-        (scoreEntry: { score: number }) => score > scoreEntry.score
-      );
+      if (global?.window !== undefined) {
+        const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+        setScores(storedScores);
+        const isHighScore = storedScores.some(
+          (scoreEntry: { score: number }) => score > scoreEntry.score
+        );
 
-      if (isHighScore) {
-        setIsNameModalVisible(true); // Show name entry modal only if it's a high score
+        if (isHighScore) {
+          setIsNameModalVisible(true); // Show name entry modal only if it's a high score
+        }
       }
     }
   }, [gameOver, score]);
@@ -161,26 +166,31 @@ export default function Home() {
     if (!playerName.trim()) {
       return; // Optionally, you can show an error if the name is empty
     }
-
     const newScore = { name: playerName, score: score };
-    const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-    storedScores.push(newScore);
-    storedScores.sort((a: any, b: any) => b.score - a.score); // Sort scores in descending order
-    storedScores.splice(5); // Keep only top 10 scores
-    localStorage.setItem("scores", JSON.stringify(storedScores));
+    if (global?.window !== undefined) {
+      const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+      setScores(storedScores);
+      storedScores.push(newScore);
+      storedScores.sort((a: any, b: any) => b.score - a.score); // Sort scores in descending order
+      storedScores.splice(5); // Keep only top 10 scores
+      localStorage.setItem("scores", JSON.stringify(storedScores));
 
-    // Update the state and close the modal
-    setScores(storedScores);
-    setIsNameModalVisible(false);
-    setPlayerName("");
-    setGameOver(true); // Reset game over state if needed
+      // Update the state and close the modal
+      setScores(storedScores);
+      setIsNameModalVisible(false);
+      setPlayerName("");
+      setGameOver(true); // Reset game over state if needed
+    }
   };
 
   const getPlayerRank = (score: number) => {
-    const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-    storedScores.push({ name: "Current Player", score }); // Add current score to the list
-    storedScores.sort((a: any, b: any) => b.score - a.score); // Sort by score
-    return storedScores.findIndex((entry: any) => entry.score === score) + 1;
+    if (global?.window !== undefined) {
+      const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+      setScores(storedScores);
+      storedScores.push({ name: "Current Player", score }); // Add current score to the list
+      storedScores.sort((a: any, b: any) => b.score - a.score); // Sort by score
+      return storedScores.findIndex((entry: any) => entry.score === score) + 1;
+    }
   };
 
   const playerRank = getPlayerRank(score);
