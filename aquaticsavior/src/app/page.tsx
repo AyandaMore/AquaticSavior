@@ -296,8 +296,15 @@ export default function Home() {
               />
             </path>
           </svg>
-          <div className={styles.plant1} />
-          <div className={styles.plant2} />
+          <div className={styles.underwaterElements}>
+            <div className={styles.seaweed1} />
+            <div className={styles.seaweed2} />
+            <div className={styles.coral1} />
+            <div className={styles.coral2} />
+            <div className={styles.rock1} />
+            <div className={styles.rock2} />
+            {/* <div className={styles.fishSchool} /> */}
+          </div>
           <div
             className={styles.fishContainer}
             style={{
