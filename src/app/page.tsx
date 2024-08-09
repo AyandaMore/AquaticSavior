@@ -16,15 +16,15 @@ import { Scoreboard } from "./scoreboard";
 import { Howl } from "howler";
 
 // Sound instances
-const startSound = new Howl({
-  src: ["/sounds/start.wav"],
-  volume: 1.0,
-});
+// const startSound = new Howl({
+//   src: ["/sounds/start.wav"],
+//   volume: 1.0,
+// });
 
-const gameOverSound = new Howl({
-  src: ["/sounds/fail.wav"],
-  volume: 1.0,
-});
+// const gameOverSound = new Howl({
+//   src: ["/sounds/fail.wav"],
+//   volume: 1.0,
+// });
 
 interface ShortcutItem {
   key: string;
@@ -88,7 +88,7 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!gameStarted) {
-        startSound.play();
+        //startSound.play();
         setGameStarted(true);
         return;
       }
@@ -145,7 +145,7 @@ export default function Home() {
 
   useEffect(() => {
     if (gameOver) {
-      gameOverSound.play(); // Play game over sound
+      // gameOverSound.play(); // Play game over sound
 
       // Check if the score is higher than any existing scores
       if (global?.window !== undefined) {
