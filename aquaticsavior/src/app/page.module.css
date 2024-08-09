@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@400;700&family=Roboto:wght@400;700&display=swap");
-
 .description {
   display: inherit;
   justify-content: inherit;
@@ -101,13 +100,14 @@
 .logo {
   position: relative;
 }
+
 /* Enable hover only on non-touch devices */
+
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
     background: rgba(var(--card-rgb), 0.1);
     border: 1px solid rgba(var(--card-border-rgb), 0.15);
   }
-
   .card:hover span {
     transform: translateX(4px);
   }
@@ -120,43 +120,36 @@
 }
 
 /* Mobile */
+
 @media (max-width: 700px) {
   .content {
     padding: 4rem;
   }
-
   .grid {
     grid-template-columns: 1fr;
     margin-bottom: 120px;
     max-width: 320px;
     text-align: center;
   }
-
   .card {
     padding: 1rem 2.5rem;
   }
-
   .card h2 {
     margin-bottom: 0.5rem;
   }
-
   .center {
     padding: 8rem 0 6rem;
   }
-
   .center::before {
     transform: none;
     height: 300px;
   }
-
   .description {
     font-size: 0.8rem;
   }
-
   .description a {
     padding: 1rem;
   }
-
   .description p,
   .description div {
     display: flex;
@@ -164,7 +157,6 @@
     position: fixed;
     width: 100%;
   }
-
   .description p {
     align-items: center;
     inset: 0 0 auto;
@@ -180,7 +172,6 @@
     background-clip: padding-box;
     backdrop-filter: blur(24px);
   }
-
   .description div {
     align-items: flex-end;
     pointer-events: none;
@@ -197,6 +188,7 @@
 }
 
 /* Tablet and Smaller Desktop */
+
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
@@ -207,7 +199,6 @@
   .vercelLogo {
     filter: invert(1);
   }
-
   .logo {
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
   }
@@ -223,6 +214,7 @@
 }
 
 /* ================game================== */
+
 .container {
   display: flex;
   flex-direction: column;
@@ -233,33 +225,38 @@
 
 @keyframes waveColorChange {
   0% {
-    color: #00aaff; /* Light blue */
+    color: #00aaff;
+    /* Light blue */
   }
   20% {
-    color: #0099ff; /* Medium blue */
+    color: #0099ff;
+    /* Medium blue */
   }
   40% {
-    color: #007acc; /* Slightly darker blue */
+    color: #007acc;
+    /* Slightly darker blue */
   }
   60% {
-    color: #005bb5; /* Dark blue */
+    color: #005bb5;
+    /* Dark blue */
   }
   80% {
-    color: #004080; /* Even darker blue */
+    color: #004080;
+    /* Even darker blue */
   }
   100% {
-    color: #00aaff; /* Back to light blue */
+    color: #00aaff;
+    /* Back to light blue */
   }
 }
 
-
 .title {
-  font-family: 'Grenze Gotisch', serif;
+  font-family: "Grenze Gotisch", serif;
   font-size: 2.5rem;
   font-weight: bold;
   color: #004a9a;
   margin-bottom: 1.5rem;
-  animation: waveColorChange 10s ease-in-out infinite; 
+  animation: waveColorChange 10s ease-in-out infinite;
 }
 
 .bowl {
@@ -304,7 +301,6 @@
   background-color: #007f00ba;
 }
 
-
 @keyframes sway {
   0%,
   100% {
@@ -331,10 +327,9 @@
   }
 }
 
-
 .fishContainer {
   width: 100px;
-  height: 100px;
+  height: 120px;
   position: absolute;
   bottom: 20%;
   left: 40%;
@@ -346,7 +341,6 @@
   transform-origin: center;
   animation: sway 2s ease-in-out infinite;
 }
-
 
 @keyframes bubble {
   0% {
@@ -361,6 +355,7 @@
     opacity: 0;
   }
 }
+
 .bubble {
   position: absolute;
   background: rgba(255, 255, 255, 0.5);
@@ -427,6 +422,7 @@
 }
 
 /* buttons */
+
 .solidButton {
   background-color: #1890ff;
   color: white;
@@ -445,6 +441,7 @@
   cursor: not-allowed;
   color: white;
 }
+
 /* theme  */
 
 .darkMode {
@@ -482,6 +479,7 @@
 }
 
 /* Additional styles for dark mode */
+
 .lightMode .bubble {
   background-color: #4444442f;
 }
@@ -491,34 +489,39 @@
 } */
 
 /* Define dark gradient */
+
 @keyframes waveDark {
-  0% { stop-color: #0066cc; }
-  100% { stop-color: #004d99; }
+  0% {
+    stop-color: #0066cc;
+  }
+  100% {
+    stop-color: #004d99;
+  }
 }
 
 .darkMode .alert {
   font-size: 1.125rem;
   color: #ff0000;
   margin-top: 1rem;
-  background-color: #ffffff5e; 
-  border-color: #ff000060; 
-
+  background-color: #ffffff5e;
+  border-color: #ff000060;
 }
 
 .ant-modal .ant-modal-content {
-  background-color: #000000; 
-  border-color: #ff000060; 
+  background-color: #000000;
+  border-color: #ff000060;
 }
 
-.modal{
-  background-color: #000000; 
-  border-color: #ff000060; 
+.modal {
+  background-color: #000000;
+  border-color: #ff000060;
 }
 
 .lightMode .solidButton:disabled,
 .lightMode .outlineButton:disabled {
-  color: #423f3f; 
+  color: #423f3f;
 }
+
 .deadFish {
   animation: deadFishAnimation 1s ease-in-out forwards;
 }
@@ -538,6 +541,7 @@
 /* page.module.css */
 
 /* Common styles for underwater elements */
+
 .underwaterElements {
   position: absolute;
   bottom: 0;
@@ -575,7 +579,11 @@
   bottom: 0;
   width: 30px;
   height: 50px;
-  background: radial-gradient(circle, rgba(255, 69, 0, 0.8) 0%, rgba(255, 0, 0, 0.4) 100%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 69, 0, 0.8) 0%,
+    rgba(255, 0, 0, 0.4) 100%
+  );
   border-radius: 50%;
 }
 
@@ -595,7 +603,7 @@
   bottom: 0;
   width: 40px;
   height: 30px;
-  background: linear-gradient(to bottom, #8B8B8B, #4A4A4A);
+  background: linear-gradient(to bottom, #8b8b8b, #4a4a4a);
   border-radius: 15px;
 }
 
@@ -615,20 +623,37 @@
   left: 70%;
   width: 100px;
   height: 30px;
-  background: radial-gradient(circle, rgba(0, 0, 255, 0.6) 0%, transparent 100%);
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 255, 0.6) 0%,
+    transparent 100%
+  );
   border-radius: 50%;
   animation: swims 6s ease-in-out infinite;
 }
 
 /* Add animation for swaying effect */
+
 @keyframes sways {
-  0% { transform: rotate(-10deg); }
-  50% { transform: rotate(10deg); }
-  100% { transform: rotate(-10deg); }
+  0% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
 }
 
 @keyframes swims {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-20px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-20px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

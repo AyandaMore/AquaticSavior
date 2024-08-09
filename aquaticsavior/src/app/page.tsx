@@ -253,12 +253,13 @@ export default function Home() {
           animationDelay: "4s",
         }}
       />
-      <Switch
-        checked={isDarkMode}
-        onChange={toggleDarkMode}
-        className={styles.themeSwitch}
-      />
+
       <div className={styles.container}>
+        <Switch
+          checked={isDarkMode}
+          onChange={toggleDarkMode}
+          className={styles.themeSwitch}
+        />
         <div className={styles.header}>
           <h1 className={styles.title}>Aquatic Savior</h1>
         </div>
@@ -303,7 +304,6 @@ export default function Home() {
             <div className={styles.coral2} />
             <div className={styles.rock1} />
             <div className={styles.rock2} />
-            {/* <div className={styles.fishSchool} /> */}
           </div>
           <div
             className={styles.fishContainer}
@@ -386,7 +386,7 @@ export default function Home() {
         {gameOver && (
           <AntAlert
             message="Game Over!"
-            description={`You reached level ${level} with a score of ${score}.`}
+            description={`You have reached level ${level} with a score of ${score}.`}
             type="error"
             showIcon
             className={styles.alert}

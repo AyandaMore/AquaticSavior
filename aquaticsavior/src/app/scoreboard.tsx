@@ -27,7 +27,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
           Leaderboard
         </span>
       }
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       footer={null}
       bodyStyle={{ padding: 0 }}
@@ -39,7 +39,7 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         {scores.length === 0 ? (
-          <p style={{ padding: '16px', textAlign: 'center' }}>
+          <p style={{ padding: "16px", textAlign: "center" }}>
             No scores available. Play the game to add scores to the leaderboard.
           </p>
         ) : (
