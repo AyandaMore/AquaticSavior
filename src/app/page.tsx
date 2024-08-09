@@ -15,16 +15,16 @@ import { Scoreboard } from "./scoreboard";
 
 import { Howl } from "howler";
 
-// Sound instances
-// const startSound = new Howl({
-//   src: ["/sounds/start.wav"],
-//   volume: 1.0,
-// });
+//Sound instances
+const startSound = new Howl({
+  src: ["/sounds/start.wav"],
+  volume: 1.0,
+});
 
-// const gameOverSound = new Howl({
-//   src: ["/sounds/fail.wav"],
-//   volume: 1.0,
-// });
+const gameOverSound = new Howl({
+  src: ["/sounds/fail.wav"],
+  volume: 1.0,
+});
 
 interface ShortcutItem {
   key: string;
@@ -63,6 +63,7 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
   const [playerName, setPlayerName] = useState("");
+  const [playerRank, setPlayerRank] = useState<number | null>(null);
   const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
 
@@ -88,7 +89,7 @@ export default function Home() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!gameStarted) {
-        //startSound.play();
+        startSound.play();
         setGameStarted(true);
         return;
       }
@@ -145,7 +146,7 @@ export default function Home() {
 
   useEffect(() => {
     if (gameOver) {
-      // gameOverSound.play(); // Play game over sound
+      gameOverSound.play(); // Play game over sound
 
       // Check if the score is higher than any existing scores
       if (global?.window !== undefined) {
@@ -183,17 +184,16 @@ export default function Home() {
     }
   };
 
-  const getPlayerRank = (score: number) => {
+  useEffect(() => {
     if (global?.window !== undefined) {
       const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-      setScores(storedScores);
       storedScores.push({ name: "Current Player", score }); // Add current score to the list
       storedScores.sort((a: any, b: any) => b.score - a.score); // Sort by score
-      return storedScores.findIndex((entry: any) => entry.score === score) + 1;
+      const rank =
+        storedScores.findIndex((entry: any) => entry.score === score) + 1;
+      setPlayerRank(rank);
     }
-  };
-
-  const playerRank = getPlayerRank(score);
+  }, [score]);
 
   const resetGame = () => {
     if (gameOver) {
