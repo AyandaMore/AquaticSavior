@@ -140,22 +140,22 @@ export default function Home() {
     const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
     setScores(storedScores);
   }, []);
-  
 
   useEffect(() => {
     if (gameOver) {
       gameOverSound.play(); // Play game over sound
-  
+
       // Check if the score is higher than any existing scores
       const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-      const isHighScore = storedScores.some((scoreEntry: { score: number }) => score > scoreEntry.score);
-  
+      const isHighScore = storedScores.some(
+        (scoreEntry: { score: number }) => score > scoreEntry.score
+      );
+
       if (isHighScore) {
         setIsNameModalVisible(true); // Show name entry modal only if it's a high score
       }
     }
   }, [gameOver, score]);
-  
 
   const handleNameSubmit = () => {
     if (!playerName.trim()) {
@@ -175,6 +175,15 @@ export default function Home() {
     setPlayerName("");
     setGameOver(true); // Reset game over state if needed
   };
+
+  const getPlayerRank = (score: number) => {
+    const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
+    storedScores.push({ name: "Current Player", score }); // Add current score to the list
+    storedScores.sort((a: any, b: any) => b.score - a.score); // Sort by score
+    return storedScores.findIndex((entry: any) => entry.score === score) + 1;
+  };
+
+  const playerRank = getPlayerRank(score);
 
   const resetGame = () => {
     if (gameOver) {
@@ -408,34 +417,54 @@ export default function Home() {
       </div>
 
       <Modal
-  title="Enter Your Name"
-  visible={isNameModalVisible}
-  onOk={handleNameSubmit}
-  onCancel={() => setIsNameModalVisible(false)}
-  okText="Save"
-  cancelText="Cancel"
-  okButtonProps={{
-    style: {
-      backgroundColor: 'transparent',
-      border: '1px solid #1890ff',
-      color: '#1890ff', // Set the text color
-    },
-  }}
-  cancelButtonProps={{
-    style: {
-      backgroundColor: 'transparent',
-     
-      color: '#1890ff', // Set the text color
-    },
-  }}
->
-  <Input
-    // placeholder="Enter your name"
-    value={playerName}
-    onChange={(e) => setPlayerName(e.target.value)}
-  />
-</Modal>
-
+        title="Enter Your Name"
+        visible={isNameModalVisible}
+        onOk={handleNameSubmit}
+        onCancel={() => setIsNameModalVisible(false)}
+        okText="Save"
+        cancelText="Cancel"
+        okButtonProps={{
+          style: {
+            backgroundColor: "transparent",
+            border: "1px solid #1890ff",
+            color: "#1890ff", // Set the text color
+          },
+        }}
+        cancelButtonProps={{
+          style: {
+            backgroundColor: "transparent",
+            color: "#1890ff", // Set the text color
+          },
+        }}
+      >
+        <Input
+          // placeholder="Enter your name"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+        />
+        <div
+          style={{
+            margin: "3px",
+            padding: "10px",
+            borderRadius: "5px",
+            backgroundColor: "#f0f2f5",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            textAlign: "center",
+          }}
+        >
+          <p>Your current score is: {score}</p>
+          <p>
+            Your rank: {playerRank}
+            {playerRank === 1
+              ? "st"
+              : playerRank === 2
+              ? "nd"
+              : playerRank === 3
+              ? "rd"
+              : "th"}
+          </p>
+        </div>
+      </Modal>
     </main>
   );
 }
