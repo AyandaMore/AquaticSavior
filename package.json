@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/howler": "^2.2.11",
     "antd": "^5.20.0",
     "framer-motion": "^11.3.24",
     "howler": "^2.2.4",
