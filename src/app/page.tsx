@@ -148,21 +148,21 @@ export default function Home() {
   useEffect(() => {
     if (gameOver) {
       gameOverSound.play(); // Play game over sound
-  
+
       if (global?.window !== undefined) {
         const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-  
+
         // If there are no scores in the leaderboard, directly ask for the name
         if (storedScores.length === 0) {
           setIsNameModalVisible(true);
         } else {
           setScores(storedScores);
-  
+
           // Check if the score is higher than any existing scores
           const isHighScore = storedScores.some(
             (scoreEntry: { score: number }) => score > scoreEntry.score
           );
-  
+
           if (isHighScore) {
             setIsNameModalVisible(true); // Show name entry modal only if it's a high score
           }
@@ -170,7 +170,6 @@ export default function Home() {
       }
     }
   }, [gameOver, score]);
-  
 
   const handleNameSubmit = () => {
     if (!playerName.trim()) {
@@ -247,7 +246,6 @@ export default function Home() {
     setIsDrawerVisible(!isDrawerVisible);
   };
 
-
   return (
     <main className={isDarkMode ? styles.darkMode : styles.lightMode}>
       <div
@@ -279,18 +277,17 @@ export default function Home() {
       />
 
       <div className={styles.container}>
-      <AntButton
+        <AntButton
           icon={<Settings />}
           onClick={toggleDrawer}
           className={styles.settingsButton}
-        >
-        </AntButton>
+        ></AntButton>
         <SettingsDrawer
-        visible={isDrawerVisible}
-        onClose={toggleDrawer}
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-      />
+          visible={isDrawerVisible}
+          onClose={toggleDrawer}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+        />
 
         <div className={styles.header}>
           <h1 className={styles.title}>Aquatic Savior</h1>
@@ -347,7 +344,15 @@ export default function Home() {
             <div
               className={`${styles.fish} ${gameOver ? styles.deadFish : ""}`}
             >
-              {gameOver ? "☣︎" : "🐠"}
+              {gameOver ? (
+                "☣︎"
+              ) : (
+                <img
+                  src="/images/fish.png"
+                  alt="Fish"
+                  className={styles.realisticFish}
+                />
+              )}
             </div>
           </div>
 
