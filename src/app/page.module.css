@@ -711,4 +711,32 @@
 .instructions strong {
   color: #004a9a;
 }
+.instructionsTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between title and icon */
+}
+
+.instructionsTitle h3 {
+  font-family: 'Grenze Gotisch', serif;
+  color: #004a9a;
+  font-size: 1.5rem;
+  margin: 0; /* Remove default margin */
+  display: flex;
+  align-items: center;
+}
+.instructionsTitle h4 {
+  color: #004a9a;
+  font-size: 1rem;
+  margin: 0; /* Remove default margin */
+  display: flex;
+  align-items: center;
+}
+
+.instructionsTitle h3 .anticon {
+  margin-left: 8px; /* Adjust spacing between title and icon */
+}
+
+
+
 
