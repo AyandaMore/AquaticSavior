@@ -41,7 +41,6 @@ const shortcuts: ShortcutItem[] = [
   { key: "Ctrl+F", description: "Find" },
   { key: "Ctrl+G", description: "Go to Line" },
   { key: "Shift+F12", description: "Find All References" },
-  { key: "Ctrl+Shift+.", description: "Peek Definition" },
   { key: "Ctrl+Shift+F", description: "Find in Files" }, // VS Code and Visual Studio
   { key: "Ctrl+.", description: "Quick Actions and Refactorings" },
   { key: "Alt+Shift+F10", description: "Show Smart Tag" },
