@@ -345,11 +345,11 @@ export default function Home() {
               <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop
                   offset="0%"
-                  style={{ stopColor: "rgb(24, 106, 237)", stopOpacity: 0.8 }}
+                  style={{ stopColor: "rgb(15,94,156)", stopOpacity: 0.5 }}
                 />
                 <stop
                   offset="100%"
-                  style={{ stopColor: "rgb(24, 106, 237)", stopOpacity: 0.8 }}
+                  style={{ stopColor: "rgb(15,94,156)", stopOpacity: 0.5 }}
                 />
               </linearGradient>
             </defs>
