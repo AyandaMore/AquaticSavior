@@ -695,3 +695,20 @@
   /* Adjust as needed */
   height: auto;
 }
+/* Apply the font to the entire settings drawer */
+.switchContainer,
+.themeSwitch,
+.instructions {
+  font-family: "Roboto", sans-serif;
+
+}
+
+/* Specific font styling for headers */
+.instructions h3 {
+  font-family: 'Grenze Gotisch', serif;
+  color: #004a9a;
+}
+.instructions strong {
+  color: #004a9a;
+}
+
