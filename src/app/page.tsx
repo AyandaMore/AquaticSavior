@@ -147,21 +147,29 @@ export default function Home() {
   useEffect(() => {
     if (gameOver) {
       gameOverSound.play(); // Play game over sound
-
-      // Check if the score is higher than any existing scores
+  
       if (global?.window !== undefined) {
         const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-        setScores(storedScores);
-        const isHighScore = storedScores.some(
-          (scoreEntry: { score: number }) => score > scoreEntry.score
-        );
-
-        if (isHighScore) {
-          setIsNameModalVisible(true); // Show name entry modal only if it's a high score
+  
+        // If there are no scores in the leaderboard, directly ask for the name
+        if (storedScores.length === 0) {
+          setIsNameModalVisible(true);
+        } else {
+          setScores(storedScores);
+  
+          // Check if the score is higher than any existing scores
+          const isHighScore = storedScores.some(
+            (scoreEntry: { score: number }) => score > scoreEntry.score
+          );
+  
+          if (isHighScore) {
+            setIsNameModalVisible(true); // Show name entry modal only if it's a high score
+          }
         }
       }
     }
   }, [gameOver, score]);
+  
 
   const handleNameSubmit = () => {
     if (!playerName.trim()) {
