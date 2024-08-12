@@ -9,10 +9,10 @@ import {
   Modal,
   Input,
 } from "antd";
-import { AlertCircle, Pause, Play, RefreshCw } from "lucide-react";
+import { AlertCircle, Pause, Play, RefreshCw, Settings } from "lucide-react";
 import { Button } from "./button";
 import { Scoreboard } from "./scoreboard";
-
+import SettingsDrawer from "./drawer";
 import { Howl } from "howler";
 
 //Sound instances
@@ -64,6 +64,7 @@ export default function Home() {
   const [isNameModalVisible, setIsNameModalVisible] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const [playerRank, setPlayerRank] = useState<number | null>(null);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
 
@@ -242,6 +243,11 @@ export default function Home() {
     setIsDarkMode(checked);
   };
 
+  const toggleDrawer = () => {
+    setIsDrawerVisible(!isDrawerVisible);
+  };
+
+
   return (
     <main className={isDarkMode ? styles.darkMode : styles.lightMode}>
       <div
@@ -273,11 +279,19 @@ export default function Home() {
       />
 
       <div className={styles.container}>
-        <Switch
-          checked={isDarkMode}
-          onChange={toggleDarkMode}
-          className={styles.themeSwitch}
-        />
+      <AntButton
+          icon={<Settings />}
+          onClick={toggleDrawer}
+          className={styles.settingsButton}
+        >
+        </AntButton>
+        <SettingsDrawer
+        visible={isDrawerVisible}
+        onClose={toggleDrawer}
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
+      />
+
         <div className={styles.header}>
           <h1 className={styles.title}>Aquatic Savior</h1>
         </div>
