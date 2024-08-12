@@ -385,7 +385,15 @@ export default function Home() {
             <div
               className={`${styles.fish} ${gameOver ? styles.deadFish : ""}`}
             >
-              {gameOver ? "☣︎" : "🐠"}
+              {gameOver ? (
+                "☣︎"
+              ) : (
+                <img
+                  src="/images/fish.png"
+                  alt="Fish"
+                  className={styles.realisticFish}
+                />
+              )}
             </div>
           </div>
 

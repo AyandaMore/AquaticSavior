@@ -677,3 +677,38 @@
   margin-right: 10px;
 }
 
+/* settingsDrawer.module.css */
+.instructions {
+  margin-top: 1rem;
+}
+
+.instructions h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.instructions p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.instructions ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+  color: var(--text-color);
+}
+
+.instructions li {
+  margin-bottom: 0.5rem;
+}
+
+.realisticFish {
+  width: 50px; /* Adjust as needed */
+  height: auto;
+}
+
+
