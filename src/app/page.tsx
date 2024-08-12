@@ -5,11 +5,10 @@ import {
   Alert as AntAlert,
   Button as AntButton,
   Progress as AntProgress,
-  Switch,
   Modal,
   Input,
 } from "antd";
-import { AlertCircle, Pause, Play, RefreshCw, Settings } from "lucide-react";
+import { Pause, Play, RefreshCw, Settings } from "lucide-react";
 import { Button } from "./button";
 import { Scoreboard } from "./scoreboard";
 import SettingsDrawer from "./drawer";
@@ -32,15 +31,27 @@ interface ShortcutItem {
 }
 
 const shortcuts: ShortcutItem[] = [
-  { key: "Q+W", description: "Quick Write" },
-  { key: "E+R", description: "Edit Redo" },
-  { key: "T+Y", description: "Toggle Yield" },
-  { key: "O+P", description: "Open Project" },
-  { key: "A+S", description: "Add Snippet" },
-  { key: "D+F", description: "Debug Function" },
+  { key: "Ctrl+Q", description: "Visual Studio Search" },
+  { key: "F5", description: "Debug Function" },
   { key: "G+H", description: "Generate Header" },
   { key: "J+K", description: "Jump to Keyword" },
   { key: "L+Z", description: "List Zoom" },
+  { key: "F12", description: "Go to Definition" },
+  { key: "F8", description: "Go to Next or Previous Result in List" },
+  { key: "F9", description: "Toggle Breakpoint" },
+  { key: "F10", description: "Step Over" },
+  { key: "Ctrl+S", description: "Save" },
+  { key: "Ctrl+Shift+S", description: "Save All" },
+  { key: "Ctrl+F", description: "Find" },
+  { key: "Ctrl+H", description: "Replace" },
+  { key: "Ctrl+K, Ctrl+C", description: "Comment Selection" },
+  { key: "Ctrl+K, Ctrl+U", description: "Uncomment Selection" },
+  { key: "Ctrl+K, Ctrl+D", description: "Format Document" },
+  { key: "Ctrl+K, Ctrl+E", description: "Toggle Code Lens" },
+  { key: "Ctrl+Tab", description: "Navigate Forward" },
+  { key: "Ctrl+Shift+Tab", description: "Navigate Backward" },
+  { key: "Ctrl+G", description: "Go to Line" },
+  { key: "Ctrl+R, Ctrl+R", description: "Rename" },
 ];
 
 const initialScores = [{ name: "Alice", score: 500 }];
@@ -96,21 +107,44 @@ export default function Home() {
       }
       if (gameOver || isPaused) return;
 
-      const key = event.key.toUpperCase();
-      setPressedKeys((prev) => new Set(prev).add(key));
+      setPressedKeys((prevKeys) => {
+        const newPressedKeys = new Set(prevKeys);
+
+        // Add modifier keys directly
+        if (event.ctrlKey) newPressedKeys.add("CTRL");
+        if (event.shiftKey) newPressedKeys.add("SHIFT");
+        if (event.altKey) newPressedKeys.add("ALT");
+
+        // Add the actual key pressed
+        const key = event.key.toUpperCase();
+        if (key !== "CONTROL" && key !== "SHIFT" && key !== "ALT") {
+          newPressedKeys.add(key);
+        }
+
+        return newPressedKeys;
+      });
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
-      const key = event.key.toUpperCase();
-      setPressedKeys((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(key);
-        return newSet;
+      setPressedKeys((prevKeys) => {
+        const newPressedKeys = new Set(prevKeys);
+
+        // Remove the actual key released
+        const key = event.key.toUpperCase();
+        newPressedKeys.delete(key);
+
+        // Remove modifier keys if they are not held down anymore
+        if (!event.ctrlKey) newPressedKeys.delete("CTRL");
+        if (!event.shiftKey) newPressedKeys.delete("SHIFT");
+        if (!event.altKey) newPressedKeys.delete("ALT");
+
+        return newPressedKeys;
       });
     };
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
@@ -118,7 +152,14 @@ export default function Home() {
   }, [gameStarted, gameOver, isPaused]);
 
   useEffect(() => {
-    const pressedKeysString = Array.from(pressedKeys).sort().join("+");
+    const pressedKeysString = Array.from(pressedKeys)
+      .sort((a, b) => {
+        if (a === "CTRL" || a === "SHIFT" || a === "ALT") return -1;
+        if (b === "CTRL" || b === "SHIFT" || b === "ALT") return 1;
+        return a.localeCompare(b);
+      })
+      .join("+");
+
     if (pressedKeysString === currentShortcut.key) {
       setScore((prevScore) => prevScore + level * 10);
       setWaterLevel((prevLevel) => Math.min(prevLevel + 20, 100));
@@ -148,21 +189,21 @@ export default function Home() {
   useEffect(() => {
     if (gameOver) {
       gameOverSound.play(); // Play game over sound
-  
+
       if (global?.window !== undefined) {
         const storedScores = JSON.parse(localStorage.getItem("scores") || "[]");
-  
+
         // If there are no scores in the leaderboard, directly ask for the name
         if (storedScores.length === 0) {
           setIsNameModalVisible(true);
         } else {
           setScores(storedScores);
-  
+
           // Check if the score is higher than any existing scores
           const isHighScore = storedScores.some(
             (scoreEntry: { score: number }) => score > scoreEntry.score
           );
-  
+
           if (isHighScore) {
             setIsNameModalVisible(true); // Show name entry modal only if it's a high score
           }
@@ -170,7 +211,6 @@ export default function Home() {
       }
     }
   }, [gameOver, score]);
-  
 
   const handleNameSubmit = () => {
     if (!playerName.trim()) {
@@ -247,7 +287,6 @@ export default function Home() {
     setIsDrawerVisible(!isDrawerVisible);
   };
 
-
   return (
     <main className={isDarkMode ? styles.darkMode : styles.lightMode}>
       <div
@@ -279,18 +318,17 @@ export default function Home() {
       />
 
       <div className={styles.container}>
-      <AntButton
+        <AntButton
           icon={<Settings />}
           onClick={toggleDrawer}
           className={styles.settingsButton}
-        >
-        </AntButton>
+        ></AntButton>
         <SettingsDrawer
-        visible={isDrawerVisible}
-        onClose={toggleDrawer}
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-      />
+          visible={isDrawerVisible}
+          onClose={toggleDrawer}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+        />
 
         <div className={styles.header}>
           <h1 className={styles.title}>Aquatic Savior</h1>
@@ -457,7 +495,7 @@ export default function Home() {
 
       <Modal
         title="Enter Your Name"
-        visible={isNameModalVisible}
+        open={isNameModalVisible}
         onOk={handleNameSubmit}
         onCancel={() => setIsNameModalVisible(false)}
         okText="Save"
