@@ -33,9 +33,6 @@ interface ShortcutItem {
 const shortcuts: ShortcutItem[] = [
   { key: "Ctrl+Q", description: "Visual Studio Search" },
   { key: "F5", description: "Debug Function" },
-  { key: "G+H", description: "Generate Header" },
-  { key: "J+K", description: "Jump to Keyword" },
-  { key: "L+Z", description: "List Zoom" },
   { key: "F12", description: "Go to Definition" },
   { key: "F8", description: "Go to Next or Previous Result in List" },
   { key: "F9", description: "Toggle Breakpoint" },
@@ -44,14 +41,11 @@ const shortcuts: ShortcutItem[] = [
   { key: "Ctrl+Shift+S", description: "Save All" },
   { key: "Ctrl+F", description: "Find" },
   { key: "Ctrl+H", description: "Replace" },
-  { key: "Ctrl+K, Ctrl+C", description: "Comment Selection" },
-  { key: "Ctrl+K, Ctrl+U", description: "Uncomment Selection" },
-  { key: "Ctrl+K, Ctrl+D", description: "Format Document" },
-  { key: "Ctrl+K, Ctrl+E", description: "Toggle Code Lens" },
-  { key: "Ctrl+Tab", description: "Navigate Forward" },
-  { key: "Ctrl+Shift+Tab", description: "Navigate Backward" },
   { key: "Ctrl+G", description: "Go to Line" },
-  { key: "Ctrl+R, Ctrl+R", description: "Rename" },
+  { key: "Ctrl+Shift+O", description: "Open Solution Explorer" },
+  { key: "Ctrl+Alt+L", description: "Focus on Solution Explorer" },
+  { key: "Ctrl+Shift+B", description: "Build Solution" },
+  { key: "Ctrl+Shift+F", description: "Find in Files" },
 ];
 
 const initialScores = [{ name: "Alice", score: 500 }];
@@ -76,7 +70,8 @@ export default function Home() {
   const [playerName, setPlayerName] = useState("");
   const [playerRank, setPlayerRank] = useState<number | null>(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const getWaterDecrease = (level: number) => 0.5 + (level - 1) * 0.1;
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const getWaterDecrease = (level: number) => 1 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
 
   useEffect(() => {
@@ -100,6 +95,9 @@ export default function Home() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isInputFocused) return;
+      event.preventDefault(); // Prevent default browser actions
+
       if (!gameStarted) {
         startSound.play();
         setGameStarted(true);
@@ -110,14 +108,17 @@ export default function Home() {
       setPressedKeys((prevKeys) => {
         const newPressedKeys = new Set(prevKeys);
 
-        // Add modifier keys directly
-        if (event.ctrlKey) newPressedKeys.add("CTRL");
-        if (event.shiftKey) newPressedKeys.add("SHIFT");
-        if (event.altKey) newPressedKeys.add("ALT");
+        // Add modifier keys
+        if (event.ctrlKey) newPressedKeys.add("Ctrl");
+        if (event.shiftKey) newPressedKeys.add("Shift");
+        if (event.altKey) newPressedKeys.add("Alt");
 
         // Add the actual key pressed
-        const key = event.key.toUpperCase();
-        if (key !== "CONTROL" && key !== "SHIFT" && key !== "ALT") {
+        let key = event.key.toUpperCase();
+        if (key === "CONTROL") key = "Ctrl";
+        if (key === "ALT") key = "Alt";
+        if (key === "SHIFT") key = "Shift";
+        if (key !== "CTRL" && key !== "ALT" && key !== "SHIFT") {
           newPressedKeys.add(key);
         }
 
@@ -126,17 +127,23 @@ export default function Home() {
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
+      if (isInputFocused) return;
+      event.preventDefault(); // Prevent default browser actions
+
       setPressedKeys((prevKeys) => {
         const newPressedKeys = new Set(prevKeys);
 
         // Remove the actual key released
-        const key = event.key.toUpperCase();
+        let key = event.key.toUpperCase();
+        if (key === "CONTROL") key = "Ctrl";
+        if (key === "ALT") key = "Alt";
+        if (key === "SHIFT") key = "Shift";
         newPressedKeys.delete(key);
 
         // Remove modifier keys if they are not held down anymore
-        if (!event.ctrlKey) newPressedKeys.delete("CTRL");
-        if (!event.shiftKey) newPressedKeys.delete("SHIFT");
-        if (!event.altKey) newPressedKeys.delete("ALT");
+        if (!event.ctrlKey) newPressedKeys.delete("Ctrl");
+        if (!event.shiftKey) newPressedKeys.delete("Shift");
+        if (!event.altKey) newPressedKeys.delete("Alt");
 
         return newPressedKeys;
       });
@@ -149,13 +156,20 @@ export default function Home() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [gameStarted, gameOver, isPaused]);
+  }, [gameStarted, gameOver, isPaused, isInputFocused]);
 
   useEffect(() => {
     const pressedKeysString = Array.from(pressedKeys)
       .sort((a, b) => {
-        if (a === "CTRL" || a === "SHIFT" || a === "ALT") return -1;
-        if (b === "CTRL" || b === "SHIFT" || b === "ALT") return 1;
+        const modifierOrder = { Ctrl: 1, Alt: 2, Shift: 3 };
+        if (a in modifierOrder && b in modifierOrder) {
+          return (
+            modifierOrder[a as keyof typeof modifierOrder] -
+            modifierOrder[b as keyof typeof modifierOrder]
+          );
+        }
+        if (a in modifierOrder) return -1;
+        if (b in modifierOrder) return 1;
         return a.localeCompare(b);
       })
       .join("+");
@@ -430,10 +444,10 @@ export default function Home() {
             <p>Press any key to start!</p>
           ) : (
             <>
-              Press: <strong>{currentShortcut.key}</strong>
+              <strong> {currentShortcut.description}</strong>
               <br />
               <span className={styles.shortcutDescription}>
-                ({currentShortcut.description})
+                Hint: {currentShortcut.key}
               </span>
             </>
           )}
@@ -526,6 +540,8 @@ export default function Home() {
           // placeholder="Enter your name"
           value={playerName}
           onChange={(e) => setPlayerName(e.target.value)}
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
         />
         <div
           style={{

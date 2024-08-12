@@ -371,7 +371,7 @@
 }
 
 .shortcutDescription {
-  font-size: 1rem;
+  font-size: 0.5rem;
   color: #0056a0;
 }
 
@@ -659,6 +659,7 @@
 }
 
 /* drawer*/
+
 .settingsButton {
   position: absolute;
   top: 10px;
@@ -667,6 +668,7 @@
 }
 
 /* settingsDrawer.module.css */
+
 .switchContainer {
   /* display: flex;
   align-items: center;
@@ -678,6 +680,7 @@
 }
 
 /* settingsDrawer.module.css */
+
 .instructions {
   margin-top: 1rem;
 }
@@ -707,8 +710,7 @@
 }
 
 .realisticFish {
-  width: 50px; /* Adjust as needed */
+  width: 50px;
+  /* Adjust as needed */
   height: auto;
 }
-
-
