@@ -39,28 +39,13 @@ const shortcuts: ShortcutItem[] = [
   { key: "Ctrl+S", description: "Save" },
   { key: "Ctrl+Shift+S", description: "Save All" },
   { key: "Ctrl+F", description: "Find" },
-  { key: "Ctrl+K, Ctrl+C", description: "Comment Selection" },
-  { key: "Ctrl+K, Ctrl+U", description: "Uncomment Selection" },
-  { key: "Ctrl+K, Ctrl+D", description: "Format Document" },
-  { key: "Ctrl+K, Ctrl+E", description: "Toggle Code Lens" },
-  { key: "Ctrl+Tab", description: "Navigate Forward" },
-  { key: "Ctrl+Shift+Tab", description: "Navigate Backward" },
   { key: "Ctrl+G", description: "Go to Line" },
-  { key: "Ctrl+R, Ctrl+R", description: "Rename" },
-  
-  // Additional Safe Shortcuts
-  { key: "Ctrl+Shift+O", description: "Go to Symbol" }, // VS Code
-  { key: "Ctrl+Shift+L", description: "Select All Occurrences of Current Selection" }, // VS Code
-  { key: "Ctrl+D", description: "Add Selection to Next Find Match" }, // VS Code
-  { key: "Ctrl+P", description: "Quick Open" }, // VS Code
-  { key: "Shift+F12", description: "Find All References" }, // Visual Studio
-  { key: "Ctrl+Shift+.", description: "Peek Definition" }, // Visual Studio
+  { key: "Shift+F12", description: "Find All References" },
+  { key: "Ctrl+Shift+.", description: "Peek Definition" },
   { key: "Ctrl+Shift+F", description: "Find in Files" }, // VS Code and Visual Studio
-  { key: "Ctrl+.", description: "Quick Actions and Refactorings" }, // Visual Studio
-  { key: "Alt+Shift+F10", description: "Show Smart Tag" }, // Visual Studio
+  { key: "Ctrl+.", description: "Quick Actions and Refactorings" },
+  { key: "Alt+Shift+F10", description: "Show Smart Tag" },
 ];
-
-
 
 export default function Home() {
   const [waterLevel, setWaterLevel] = useState(90);
