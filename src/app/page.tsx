@@ -67,7 +67,7 @@ export default function Home() {
   const [playerRank, setPlayerRank] = useState<number | null>(null);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const getWaterDecrease = (level: number) => 1 + (level - 1) * 0.1;
+  const getWaterDecrease = (level: number) => 0.8 + (level - 1) * 0.1;
   const getTriesForNextLevel = (level: number) => 5 + level * 2;
 
   useEffect(() => {
